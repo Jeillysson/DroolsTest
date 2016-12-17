@@ -1,0 +1,56 @@
+package com.sample
+
+import com.sample.Message;
+import com.sample.Bebidas.*;
+import java.util.Scanner;
+
+rule "Bebidas"
+	when
+		m: Message (status == Message.BEBIDAS , myMessage : message)
+	then
+		Scanner entrada = new Scanner(System.in);
+		System.out.println(myMessage);
+		System.out.println(tipoBebida.REFRIGERANTES.getValor()+" - "+tipoBebida.REFRIGERANTES);
+		System.out.println(tipoBebida.SUCOS.getValor()+" - "+tipoBebida.SUCOS);
+		System.out.println(tipoBebida.CAFE.getValor()+" - "+tipoBebida.CAFE);
+		System.out.println("4 - Para retornar ao menu principal");
+		int n1 = entrada.nextInt();
+		switch (n1){
+			case 1:
+				m.setStatus( Message.REFRIGERANTES );
+        		m.setMessage("REFRIGERANTES: ");
+        		break;
+        	case 2:
+        		m.setStatus( Message.SUCOS);
+        		m.setMessage("SUCOS");
+        	case 3:
+        		m.setStatus( Message.CAFE);
+        		m.setMessage("CAFÉS");
+        	case 4:
+        		m.setStatus (Message.RETORNO);
+        		m.setMessage("Você deseja mais alguma coisa? ");
+			default:
+				m.setStatus( Message.FIM );
+		}
+		update(m);
+end
+
+rule "Refrigerantes"
+	when
+		m: Message (status == Message.REFRIGERANTES , myMessage : message)
+	then
+		System.out.println(myMessage);
+		System.out.println(tipoRefrigerante.CocaCola.getValor()+" - "+tipoRefrigerante.CocaCola+" = "+tipoRefrigerante.CocaCola.getPreco());
+		System.out.println(tipoRefrigerante.Guarana.getValor()+" - "+tipoRefrigerante.Guarana+" = "+tipoRefrigerante.Guarana.getPreco());
+		System.out.println(tipoRefrigerante.Fanta.getValor()+" - "+tipoRefrigerante.Fanta+" = "+tipoRefrigerante.Fanta.getPreco());
+		System.out.println(tipoRefrigerante.Sprite.getValor()+" - "+tipoRefrigerante.Sprite+" = "+tipoRefrigerante.Sprite.getPreco());
+		System.out.println(tipoRefrigerante.Dolly.getValor()+" - "+tipoRefrigerante.Dolly+" = "+tipoRefrigerante.Dolly.getPreco());
+end
+
+rule "Sucos"
+	when
+		m: Message (status == Message.SUCOS, myMessage: message)
+	then
+		System.out.println(myMessage);
+		System.out.println(tipoSucos.Graviola.getValor()+" - "+tipoSucos.Graviola+" = "+tipoSucos.Graviola.getPreco());
+end

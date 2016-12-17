@@ -1,0 +1,53 @@
+package com.sample
+ 
+import com.sample.Message;
+import java.util.Scanner;
+
+rule "O que você deseja?"
+    when
+        m : Message( status == Message.INICIO, myMessage : message )
+    then
+    	Scanner entrada = new Scanner (System.in);
+        System.out.println( myMessage );
+        System.out.println("1 - Salgados\n2 - Doces\n3 - Bebidas\n"+
+        "4 - Para sair ");
+        int n1 = entrada.nextInt();
+        switch (n1){
+        	case 1:
+        		m.setStatus( Message.SALGADOS );
+        		m.setMessage("SALGADOS: ");
+        		break;
+        	case 2:
+        		m.setStatus( Message.DOCES);
+        		m.setMessage("DOCES: ");
+        	case 3:
+        		m.setStatus( Message.BEBIDAS);
+        		m.setMessage("BEBIDAS: ");
+        		break;
+        	case 4:
+        		m.setStatus( Message.FIM );
+        		break;
+        	default:
+        		m.setStatus( Message.FIM );
+        }       	 
+        update( m );
+end
+
+rule "Salgados"
+    when
+       	m: Message( status == Message.SALGADOS , myMessage : message )
+    then
+    	System.out.println(myMessage);
+    	System.out.println("1 - Coxinha\n2 - Esfirra\n3 - Hamburguer\n4 - MiniPizza");	
+       	m.setStatus( Message.FIM);
+       	update(m)
+end
+
+
+
+rule "Fim"
+	when
+		Message (status == Message.FIM, myMessage : message)
+	then
+		//System.out.println("Pedido Realizado com Sucesso");
+end
